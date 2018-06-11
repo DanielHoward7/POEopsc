@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="user_catagory"
+        android:title="Your Profile">
+
+        <EditTextPreference
+            android:dialogTitle="Your name"
+            android:dialogMessage="Enter Name"
+            android:inputType="textCapWords"
+            android:key="key_name"
+            android:title="Name"
+            android:summary="Dan Howard">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:dialogTitle="Your Email"
+            android:dialogMessage="Enter Email"
+            android:inputType="textCapWords"
+            android:key="key_email"
+            android:title="Email"
+            android:summary="Dan@dan.com">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:dialogTitle="Your Height"
+            android:dialogMessage="Enter your height"
+            android:inputType="textCapWords"
+            android:key="key_height"
+            android:title="Height"
+            android:summary="1.81m">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:dialogTitle="Your Weight"
+            android:dialogMessage="Enter your Weight"
+            android:inputType="textCapWords"
+            android:key="key_weight"
+            android:title="Weight"
+            android:summary="60 kgs">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:dialogTitle="Target Weight"
+            android:dialogMessage="Set weight goal"
+            android:inputType="textCapWords"
+            android:key="key_weight_goal"
+            android:title="Target weight"
+            android:summary="60 kgs">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:dialogTitle="Your Daily Steps"
+            android:dialogMessage="Enter your steps goal"
+            android:inputType="textCapWords"
+            android:key="key_steps_goal"
+            android:title="Target steps"
+            android:summary="5000">
+        </EditTextPreference>
+
+
+    </PreferenceCategory>
+        <!--<PreferenceCategory-->
+            <!--android:title="App Settings">-->
+
+            <!--<CheckBoxPreference-->
+                <!--android:defaultValue="true"-->
+                <!--android:key="enable_timer"-->
+                <!--android:summary="Enable or disable Notifications"-->
+                <!--android:title="Enable Notifications" />-->
+
+            <!--<ListPreference-->
+                <!--android:dependency="enable_timer"-->
+                <!--android:entries="@array/timerList"-->
+                <!--android:entryValues="@array/timerListValues"-->
+                <!--android:key="key_timer"-->
+                <!--android:summary="Choose your notification "-->
+                <!--android:title="Notification" />-->
+
+        <!--</PreferenceCategory>-->
+
+    <PreferenceCategory
+        android:title="Other">
+
+            <SwitchPreference
+                android:key="enable_imperial"
+                android:editable="true"
+                android:title="Switch from metric to imperial"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
