@@ -26,6 +26,12 @@
             android:hint="Weight"
             android:inputType="number" />
 
+        <TextView
+            android:id="@+id/unit"
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+            android:text="KGs" />
+
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="100dp"

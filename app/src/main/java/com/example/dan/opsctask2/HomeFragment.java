@@ -2,6 +2,7 @@ package com.example.dan.opsctask2;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -30,7 +31,7 @@ import java.util.List;
  * Created by Dan on 5/12/2018.
  */
 
-public class HomeFragment extends Fragment implements SensorEventListener {
+public class HomeFragment extends Fragment implements SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "HomeFragment";
     private SensorManager sensorManager;
@@ -40,8 +41,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private LineChart lineChart;
     Button btnSteps;
     ArrayList<Entry> stepList = new ArrayList<>();
+    ArrayList<Entry> targets =  new ArrayList<>();
     float x;
-
+    float y = 1f;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,26 +71,30 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
                if (v.getId()==R.id.buttonSubmit) {
 
-                   Entry steps = new Entry(x, 1f);
+                   Entry steps = new Entry(x, y);
                    stepList.add(steps);
+
+                   Entry target =  new Entry(500f,0f);
+                   targets.add(target);
 
                    LineDataSet setSteps = new LineDataSet(stepList, "Steps");
                    setSteps.setAxisDependency(YAxis.AxisDependency.RIGHT);
 
+                   LineDataSet setTarget =  new LineDataSet(targets, "Goal");
 
                    List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
                    dataSets.add(setSteps);
+                   dataSets.add(setTarget);
 
                    LineData data = new LineData(dataSets);
                    lineChart.setData(data);
                    lineChart.invalidate();
-                   x += 1f;
+                   y += 1f;
                }
 
            }
 
        });
-
 
         return view;
     }
@@ -134,6 +140,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     }
 
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+    }
 }
 
