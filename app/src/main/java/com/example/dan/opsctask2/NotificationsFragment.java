@@ -3,6 +3,7 @@ package com.example.dan.opsctask2;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -20,7 +22,13 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +49,11 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
     boolean metric = true;
 
     private LineChart lineChart;
+
+    public File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+    public String fileName = "weight.txt";
+    File log = new File(filePath, fileName);
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -60,16 +73,17 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
         btnWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String w = weightEditT.getText().toString();
+                saveToFile(w);
 
                 if (v.getId()==R.id.buttonSubmit) {
+
                     weights = Float.valueOf(weightEditT.getText().toString());
                     Entry weight = new Entry(x, weights);
                     weightList.add(weight);
 
                     LineDataSet setWeight = new LineDataSet(weightList, "Weight");
                     setWeight.setAxisDependency(YAxis.AxisDependency.RIGHT);
-
-
 
                     List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
                     dataSets.add(setWeight);
@@ -102,6 +116,9 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
 
     //axis thing
 
+
+
+
         return view;
     }
 
@@ -119,6 +136,27 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
         }else {
             //unittextview.setText("lbs");
             //weight = getlast value * 2.2
+        }
+
+    }
+
+    public void saveToFile(String text){
+
+        try {
+            log.getParentFile().mkdirs();
+            SimpleDateFormat dateFormat = new SimpleDateFormat(("dd/mm/yyyy"));
+            String current = dateFormat.format(new Date());
+            text += " " + current;
+            FileOutputStream fileOutputStream = new FileOutputStream(log, true);
+            fileOutputStream.write(text.getBytes());
+            fileOutputStream.write("\n".getBytes());
+            fileOutputStream.close();
+
+            Toast.makeText(getContext().getApplicationContext(),"saved", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+                e.printStackTrace();
+            Toast.makeText(getContext().getApplicationContext(),"error", Toast.LENGTH_LONG).show();
+
         }
 
     }

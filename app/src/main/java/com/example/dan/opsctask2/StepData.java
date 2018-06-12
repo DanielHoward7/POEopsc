@@ -53,5 +53,5 @@ public class StepData {
         public String toString() {
             return "t=" + timestamp + ", x=" + x + ", y=" + y + ", z=" + z;
         }
-    }
+}
 
