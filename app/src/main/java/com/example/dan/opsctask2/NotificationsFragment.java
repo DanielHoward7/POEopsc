@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +17,18 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,12 +43,11 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
     private static final String TAG = "NotificationsFragment";
 
     Button btnWeight;
-    float weights = 1f;
 
     EditText weightEditT;
     ArrayList<Entry> weightList = new ArrayList<>();
 
-    float x = 1f;
+    float y =1f;
     boolean clicked = false;
     boolean metric = true;
 
@@ -70,6 +73,8 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
         lineChart.setScaleEnabled(false);
         updateUnit();
 
+
+
         btnWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,11 +83,18 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
 
                 if (v.getId()==R.id.buttonSubmit) {
 
-                    weights = Float.valueOf(weightEditT.getText().toString());
-                    Entry weight = new Entry(x, weights);
-                    weightList.add(weight);
 
-                    LineDataSet setWeight = new LineDataSet(weightList, "Weight");
+                    ArrayList<LogWeight> logArray = readFile();
+                    ArrayList<Entry> weightList = new ArrayList<>();
+
+                    for (LogWeight logWeight : logArray){
+
+                            weightList.add(new Entry(y ,logWeight.getWeight()));
+                        Log.d("Wtf", "got here");
+
+                     }
+
+                    LineDataSet setWeight = new LineDataSet(weightList, "Weights");
                     setWeight.setAxisDependency(YAxis.AxisDependency.RIGHT);
 
                     List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
@@ -94,13 +106,17 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
                     left.setAxisMinimum(30f);
                     left.setAxisMaximum(130f);
 
+                    XAxis x = lineChart.getXAxis();
+                    x.setAxisMaximum(30);
+                    x.setAxisMinimum(1);
+
                     LimitLine limit = new LimitLine(50f,"tagret weight");
                     limit.setLineColor(Color.BLUE);
                     left.addLimitLine(limit);
 
 //                    left.setDrawLabels(false);
                     Description description = new Description();
-                    description.setText("poo");
+                    description.setText("lbs");
                     lineChart.setDescription(description);
 
                     YAxis right = lineChart.getAxisRight();
@@ -108,7 +124,7 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
                     right.setAxisMinimum(66f);
 
                     lineChart.invalidate();
-                    x += 1f;
+                    y += 1f;
                     weightEditT.setText("");
                 }
             }
@@ -158,6 +174,40 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
             Toast.makeText(getContext().getApplicationContext(),"error", Toast.LENGTH_LONG).show();
 
         }
+    }
+
+    public ArrayList<LogWeight> readFile(){
+
+        int w;
+        Date d;
+        ArrayList<LogWeight> logWeight= new ArrayList<>();
+
+        File file = new File(filePath, "weight.txt");
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+            String row;
+
+            while ((row = bufferedReader.readLine()) != null){
+                String[]tokens = row.split(" ");
+                w = Integer.valueOf(tokens[0]);
+                d = new Date(tokens[1]);
+
+                LogWeight log = new LogWeight(d, w);
+                logWeight.add(log);
+
+            }
+
+            bufferedReader.close();
+
+             } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return logWeight;
 
     }
+
+
 }
