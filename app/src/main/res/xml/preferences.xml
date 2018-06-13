@@ -85,7 +85,7 @@
             <SwitchPreference
                 android:key="enable_imperial"
                 android:editable="true"
-                android:title="Switch from metric to imperial"
+                android:title="Switch from imperial to metric units"
             />
 
     </PreferenceCategory>

@@ -11,8 +11,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Your fitness history"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+        android:gravity="center"
+        android:text="Your Step Hub"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,7 +25,8 @@
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="36dp" />
+        android:textSize="36dp"
+        android:textColor="@color/colorPrimary"/>
 
     <Button
         android:id="@+id/buttonSubmit"
@@ -32,6 +35,17 @@
         android:layout_marginLeft="2dp"
         android:gravity="center"
         android:text="Graph today's steps" />
+
+    <TextView
+        android:id="@+id/unit3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Days of Month"
+
+        android:textColor="@color/colorPrimary" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineGraph"

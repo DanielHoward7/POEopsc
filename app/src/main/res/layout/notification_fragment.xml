@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,19 +11,26 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Your fitness history"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:elevation="0dp"
+            android:text="Your Weights"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/inputTextView"
-            android:layout_width="137dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="Input today's weight:" />
+            android:text="Input today's weight:"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            />
 
         <EditText
             android:id="@+id/weightEditText"
             android:layout_width="137dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
             android:hint="Weight"
             android:inputType="number" />
 
@@ -30,15 +38,27 @@
             android:id="@+id/unit"
             android:layout_width="138dp"
             android:layout_height="wrap_content"
-            android:text="KGs" />
+            android:layout_marginLeft="120dp"
+            android:paddingLeft="100dp"
+            android:text="KGs"
+            android:textColor="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="140dp"
             android:gravity="center"
             android:text="Submit" />
+
+        <TextView
+            android:id="@+id/unit2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Days of Month"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
     <com.github.mikephil.charting.charts.LineChart

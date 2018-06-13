@@ -90,6 +90,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
 
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);
+        drawGraph();
 
        btnSteps.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -154,6 +155,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
     public void setTarget(){
         target = sharedPreferences.getString("key_steps_goal", "");
         targetF = Float.valueOf(target);
+
     }
 
     public void drawGraph(){

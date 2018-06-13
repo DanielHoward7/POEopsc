@@ -78,6 +78,7 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
 
         updateUnit();
         setTarget();
+        drawGraph();
 
 
         lineChart.setDragEnabled(true);
@@ -156,10 +157,8 @@ public class NotificationsFragment extends Fragment implements SharedPreferences
 
         if (metric){
             unit.setText("KGS");
-            // weight = getlastvalue from file
         }else {
             unit.setText("LBS");
-            //weight = getlast value * 2.2
         }
     }
 
