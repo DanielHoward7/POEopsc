@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -57,6 +58,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
     float x;
     float y = 1f;
 
+    String target;
+    Float targetF;
+    SharedPreferences sharedPreferences;
+
     public File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
     public String fileName = "step.txt";
 
@@ -75,6 +80,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
 
         View view = inflater.inflate(R.layout.home_fragment,container,false);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        setTarget();
         count = (TextView) view.findViewById(R.id.count);
         btnSteps = (Button) view.findViewById(R.id.buttonSubmit);
         lineChart = (LineChart) view.findViewById(R.id.lineGraph);
@@ -92,26 +101,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
                if (v.getId()==R.id.buttonSubmit) {
 
                    drawGraph();
-
-//                   Entry steps = new Entry(x, y);
-//                   stepList.add(steps);
-//
-//                   Entry target =  new Entry(500f,0f);
-//                   targets.add(target);
-//
-//                   LineDataSet setSteps = new LineDataSet(stepList, "Steps");
-//                   setSteps.setAxisDependency(YAxis.AxisDependency.RIGHT);
-//
-//                   LineDataSet setTarget =  new LineDataSet(targets, "Goal");
-//
-//                   List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-//                   dataSets.add(setSteps);
-//                   dataSets.add(setTarget);
-//
-//                   LineData data = new LineData(dataSets);
-//                   lineChart.setData(data);
-//                   lineChart.invalidate();
-//                   y += 1f;
                }
 
            }
@@ -145,12 +134,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
         if (activityRunning) {
             count.setText(String.valueOf(event.values[0]));
             x = (Float.valueOf(event.values[0]));
-//            float y = event.values[1];
-//            float z = event.values[2];
-//            long timestamp = System.currentTimeMillis();
-//            StepData data = new StepData(timestamp, x, y, z);
-//            sensorData.add(data);
-
         }
 
     }
@@ -163,6 +146,14 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+        setTarget();
+        drawGraph();
+
+    }
+
+    public void setTarget(){
+        target = sharedPreferences.getString("key_steps_goal", "");
+        targetF = Float.valueOf(target);
     }
 
     public void drawGraph(){
@@ -185,19 +176,20 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
 
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
+        lineChart.getAxisRight().setEnabled(false);
 
 
-//        XAxis x = lineChart.getXAxis();
-//        x.setAxisMaximum(30);
-//        x.setAxisMinimum(0);
+        XAxis x = lineChart.getXAxis();
+        x.setAxisMaximum(31);
+        x.setAxisMinimum(1);
+        x.setGranularity(1f);
 
-//        YAxis left = lineChart.getAxisLeft();
-//        left.setAxisMinimum(30f);
-//        left.setAxisMaximum(130f);
+        YAxis left = lineChart.getAxisLeft();
+        left.setAxisMinimum(0f);
 
-//        LimitLine limit = new LimitLine(targetF,"target weight");
-//        limit.setLineColor(Color.BLUE);
-//        left.addLimitLine(limit);
+        LimitLine limit = new LimitLine(targetF,"target weight");
+        limit.setLineColor(Color.BLUE);
+        left.addLimitLine(limit);
 
 //        left.setDrawLabels(false);
         Description description = new Description();
@@ -207,9 +199,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Share
 
 
         YAxis right = lineChart.getAxisRight();
-        right.setAxisMaximum(286f);
-        right.setAxisMinimum(66f);
-
+        right.setDrawGridLines(false);
         lineChart.invalidate();
     }
 
